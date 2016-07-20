@@ -1,0 +1,24 @@
+version: "2"
+
+services:
+  tomcat:
+    image: tomcat:8.5-jre8
+    volumes:
+      - ./opendj-rest2ldap-servlet-3.0.0.war:/usr/local/tomcat/webapps/rest2ldap.war
+      - ./opendj-rest2ldap-servlet-3.0.0/:/usr/local/tomcat/webapps/rest2ldap/
+    networks:
+      - dockeropendjexample
+
+  ldap:
+    image: beli/ldap
+    volumes:
+      - ./docker/ldap/Example.ldif:/tmp/Example.ldif
+    environment:
+      CONF_ROOTPW: toor
+      CONF_BASEDN: dc=example,dc=com
+    networks:
+      - dockeropendjexample
+
+networks:
+   dockeropendjexample:
+    driver: bridge
